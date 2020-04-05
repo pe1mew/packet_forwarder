@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------
-  This file is part of the mp_pktfwd cross conversion function library.
+  This file is part of the mp_pktfwd uniformize EU868<>US915 library.
 
   This code is free software:
   you can redistribute it and/or modify it under the terms of a Creative
@@ -12,21 +12,8 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   --------------------------------------------------------------------*/
 
-/*!
- * \file heliumeuus.h
- * \brief cross conversion functions EU868 US915 freuencies for the Helium network.
- * \author R. Welling (remko@rfsee.nl)
- * \date See version history
- * \version See version history
- *
- * Version|Date        |Note
- * -------|------------|----
- * 0      | 4-4-2020   | Initial version 
- * 
- */
+/// \file uniformize.c
+/// \author R. Welling (remko@rfsee.nl)
 
-#ifndef _HELIUM_EU_US_H_
-#define _HELIUM_EU_US_H_
+#include uniformize.h
 
-
-#endif /* _HELIUM_EU_US_H_ */

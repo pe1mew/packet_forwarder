@@ -18,6 +18,8 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 Maintainer: Michael Coracin
 Maintainer for TTN: Ruud Vlaming
 Modifications for multi protocol use: Jac Kersing
+
+Modifications for uniformization from EU-TTN frequencies to US-Helium frequencies: Remko welling
 */
 
 
@@ -112,15 +114,15 @@ Modifications for multi protocol use: Jac Kersing
 #define XERR_INIT_AVG       128         /* number of measurements the XTAL correction is averaged on as initial value */
 #define XERR_FILT_COEF      256         /* coefficient for low-pass XTAL error tracking */
 
-#define PKT_PUSH_DATA   0
-#define PKT_PUSH_ACK    1
-#define PKT_PULL_DATA   2
-#define PKT_PULL_RESP   3
-#define PKT_PULL_ACK    4
-#define PKT_TX_ACK      5
+#define PKT_PUSH_DATA       0
+#define PKT_PUSH_ACK        1
+#define PKT_PULL_DATA       2
+#define PKT_PULL_RESP       3
+#define PKT_PULL_ACK        4
+#define PKT_TX_ACK          5
 
-#define STATUS_SIZE     3072
-#define TX_BUFF_SIZE    ((540 * NB_PKT_MAX) + 30 + STATUS_SIZE)
+#define STATUS_SIZE         3072
+#define TX_BUFF_SIZE        ((540 * NB_PKT_MAX) + 30 + STATUS_SIZE)
 
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE VARIABLES (GLOBAL) ------------------------------------------- */
@@ -722,12 +724,13 @@ static int parse_gateway_configuration(const char * conf_file) {
     const char conf_obj_name[] = "gateway_conf";
     JSON_Value *root_val;
     JSON_Object *conf_obj = NULL;
-    JSON_Value *val = NULL; /* needed to detect the absence of some fields */
+    JSON_Value *val  = NULL; /* needed to detect the absence of some fields */
 	JSON_Value *val1 = NULL; /* needed to detect the absence of some fields */
 	JSON_Value *val2 = NULL; /* needed to detect the absence of some fields */
 	JSON_Value *val3 = NULL; /* needed to detect the absence of some fields */
 	JSON_Value *val4 = NULL; /* needed to detect the absence of some fields */
 	JSON_Value *val5 = NULL; /* needed to detect the absence of some fields */
+	JSON_Value *helium = NULL; /* needed to detect the absence of some fields, Helium */
 	JSON_Array *confservers = NULL;
     const char *str; /* pointer to sub-strings in the JSON data */
     unsigned long long ull = 0;
@@ -782,6 +785,7 @@ static int parse_gateway_configuration(const char * conf_file) {
 			vgwid = json_object_get_string(nw_server, "serv_gw_id");
 			vgwkey = json_object_get_string(nw_server, "serv_gw_key");
 			vcrit = json_object_get_value(nw_server, "critical");
+            helium = json_object_get_value(nw_server, "helium"); /// Helium
 
 			/* Try to read the fields */
 			if (str != NULL)  snprintf(servers[ic].addr, sizeof servers[ic].addr, "%s",str);
@@ -791,6 +795,7 @@ static int parse_gateway_configuration(const char * conf_file) {
 			if (val4 != NULL) servers[ic].upstream = (bool) json_value_get_boolean(val4); 
 			if (val5 != NULL) servers[ic].downstream = (bool) json_value_get_boolean(val5); 
 			if (vcrit != NULL) servers[ic].critical = (bool) json_value_get_boolean(vcrit); 
+			if (helium != NULL) servers[ic].helium = (bool) json_value_get_boolean(helium); /// Helium
 			/* If there is no server name we can only silently progress to the next entry */
 			if (str == NULL) {
 				continue;

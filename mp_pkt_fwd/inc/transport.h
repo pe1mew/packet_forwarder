@@ -5,6 +5,8 @@
  *      Author: Jac Kersing
  */
 
+ /// Added "bool helium" to server typedef
+
 
 #ifndef _TRANSPORT_H
 #define _TRANSPORT_H
@@ -35,18 +37,19 @@ struct _server {
     int  max_stall;         // max number of missed responses
     char gw_id[64];         // gateway ID for TTN
     char gw_key[200];       // gateway key to connect to TTN
-    int  gw_port;	    // gateway port
+    int  gw_port;	        // gateway port
     bool live;              // Server is life?
     bool connecting;	    // Connection setup in progress
-    bool critical;	    // Transport critical? Should connect at startup?
+    bool critical;	        // Transport critical? Should connect at startup?
     int  sock_up;           // Semtech up socket
     int  sock_down;         // Semtech down socket
     sem_t send_sem;         // semaphore for sending data
     pthread_t t_down;	    // semtech down thread
-    pthread_t t_up;	    // upstream thread
+    pthread_t t_up;	        // upstream thread
     time_t contact;         // time of last contact
     Queue *queue;           // queue of packets uplink data
     TTN *ttn;               // TTN connection object
+    bool helium;            // Identify that the server requires uniformization
 };
 typedef struct _server Server;
 
