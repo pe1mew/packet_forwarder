@@ -3,16 +3,18 @@
 # Build script for Raspberry Pi based on resin build script
 #
 
-INSTALL_DIR="/opt/ttn-gateway"
+#INSTALL_DIR="/opt/ttn-gateway"
+INSTALL_DIR="/home/pi/gateway"
 
 mkdir -p $INSTALL_DIR/dev
 cd $INSTALL_DIR/dev
 
-if [ ! -d wiringPi ]; then
-    git clone git://git.drogon.net/wiringPi  || { echo 'Cloning wiringPi failed.' ; exit 1; }
-    cd wiringPi
+if [ ! -d WiringPi ]; then
+    git clone https://github.com/WiringPi/WiringPi.git || { echo 'Cloning wiringPi failed.' ; exit 1; }
+#    git clone git://git.drogon.net/wiringPi  || { echo 'Cloning wiringPi failed.' ; exit 1; }
+    cd WiringPi
 else
-    cd wiringPi
+    cd WiringPi
     git reset --hard
     git pull
 fi
@@ -51,8 +53,21 @@ else
 fi
 
 # make sure we get the latest
-rm -rf packet_forwarder
-git clone https://github.com/kersing/packet_forwarder.git  || { echo 'Cloning packet forwarder failed.' ; exit 1; }
+#rm -rf packet_forwarder
+#git clone https://github.com/kersing/packet_forwarder.git  || { echo 'Cloning packet forwarder failed.' ; exit 1; }
+
+# alternative version for development
+if [ ! -d packet_forwarder ]; then
+    git clone https://github.com/pe1mew/packet_forwarder.git  || { echo 'Cloning lora_gateway failed.' ; exit 1; }
+    cd packet_forwarder
+else
+    cd lora_gateway
+    git checkout pre-helium
+fi
+cd ..
+
+
+
 
 if [ ! -d protobuf ]; then
     git clone https://github.com/google/protobuf.git  || { echo 'Cloning protobuf failed.' ; exit 1; }
